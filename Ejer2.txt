@@ -1,0 +1,33 @@
+#Challen1
+
+CREATE TABLE Challen1 AS SELECT A.au_id AS 'AUTHOR ID', A.au_fname AS 'AUTHOR FIRST NAME',  A.au_lname AS 'AUTHOR LAST NAME', t.title AS 'TITLE', p.pub_name AS 'PUBLICATIONS' 
+FROM authors A 
+INNER JOIN titleauthor TA 
+ON A.au_id = TA.au_id 
+INNER JOIN titles t 
+ON t.title_id  = TA.title_id 
+INNER JOIN publishers p
+ON p.pub_id = t.pub_id;
+
+#Challen2
+
+CREATE TABLE Challen2 AS SELECT "AUTHOR ID", "AUTHOR FIRST NAME" ,"AUTHOR LAST NAME" , PUBLICATIONS, COUNT(T.title) AS "TOTAL_COUNT"
+FROM Challen1 C INNER JOIN titles T ON C.TITLE = T.title 
+GROUP BY "AUTHOR ID" , PUBLICATIONS 
+ORDER BY "AUTHOR ID" DESC ;
+
+#Challen3
+
+SELECT a.au_id AS "ID", a.au_lname AS "Apellido" ,a.au_fname AS "Nombre",SUM(s.qty) AS "TOTAL"
+FROM authors a  INNER JOIN titleauthor t2 ON a.au_id = t2.au_id 
+INNER JOIN sales s ON s.title_id =t2.title_id 
+GROUP BY "ID" 
+ORDER BY "TOTAL" DESC;
+
+#Challen4
+
+SELECT a.au_id AS "ID", a.au_lname AS "Apellido" ,a.au_fname AS "Nombre",COALESCE (SUM(s.qty),0) AS "TOTAL"
+FROM authors a  LEFT JOIN titleauthor t2 ON a.au_id = t2.au_id
+LEFT JOIN sales s ON s.title_id =t2.title_id
+GROUP BY "ID"
+ORDER BY "TOTAL" DESC;
